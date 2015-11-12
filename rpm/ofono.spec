@@ -1,8 +1,9 @@
 Name:       ofono
 
 Summary:    Open Source Telephony
-Version:    1.16
-Release:    1
+Version:    1.16+git17
+Release:    1.32.2
+Vendor:     meego
 Group:      Communications/Connectivity Adaptation
 License:    GPLv2
 URL:        http://ofono.org
