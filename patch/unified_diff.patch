@@ -1,0 +1,40 @@
+commit 4f56a634d31a61bd9d8f6fff1dfb3f3ceea8292e
+Author: CODeRUS <coderusinbox@gmail.com>
+Date:   Tue Feb 3 17:02:52 2015 +0500
+
+    v0.0.1
+
+diff --git a/usr/share/jolla-settings/pages/mobilenetworking/mainpage.qml b/usr/share/jolla-settings/pages/mobilenetworking/mainpage.qml
+index bf5641a..9f4ff07 100644
+--- a/usr/share/jolla-settings/pages/mobilenetworking/mainpage.qml
++++ b/usr/share/jolla-settings/pages/mobilenetworking/mainpage.qml
+@@ -217,7 +217,7 @@ Page {
+             ComboBox {
+                 id: networkMode
+ 
+-                property variant preferences: ["any", "umts", "gsm"]
++                property variant preferences: ["any", "lte", "umtslte", "umts", "gsmumts", "gsm"]
+                 property bool _externalChange: false
+ 
+                 //: Network mode ComboBox label
+@@ -249,15 +249,18 @@ Page {
+                 Component.onCompleted: setTechnologyPreference(radioSettings.technologyPreference)
+ 
+                 menu: ContextMenu {
++                    MenuItem { text: "Any" }
+                     //: Network mode settings ComboBox item for preferring 4G/LTE
+                     //% "Prefer 4G"
+                     MenuItem {
+-                        text: qsTrId("settings_network-me-network_mode_prefer_4G")
++                        text: "4G only"
+                         visible: RilSettings.ltePermitted
+                     }
++                    MenuItem { text: "4G + 3G" }
+                     //: Network mode settings ComboBox item for prefering 3G/umts
+                     //% "Prefer 3G"
+-                    MenuItem { text: qsTrId("settings_network-me-network_mode_prefer_3G") }
++                    MenuItem { text: "3G only" }
++                    MenuItem { text: "3G + 2G" }
+                     //: Network mode settings ComboBox item for 2G/gsm only
+                     //% "2G only"
+                     MenuItem { text: qsTrId("settings_network-me-network_mode_2G_only") }
