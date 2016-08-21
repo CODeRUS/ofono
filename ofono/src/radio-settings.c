@@ -67,6 +67,10 @@ const char *ofono_radio_access_mode_to_string(enum ofono_radio_access_mode m)
 		return "umts";
 	case OFONO_RADIO_ACCESS_MODE_LTE:
 		return "lte";
+	case OFONO_RADIO_ACCESS_MODE_GSM_UMTS:
+		return "gsmumts";
+	case OFONO_RADIO_ACCESS_MODE_UMTS_LTE:
+		return "umtslte";
 	default:
 		return "";
 	}
@@ -89,6 +93,12 @@ ofono_bool_t ofono_radio_access_mode_from_string(const char *str,
 		return TRUE;
 	} else if (g_str_equal(str, "lte")) {
 		*mode = OFONO_RADIO_ACCESS_MODE_LTE;
+		return TRUE;
+	} else if (g_str_equal(str, "gsmumts")) {
+		*mode = OFONO_RADIO_ACCESS_MODE_GSM_UMTS;
+		return TRUE;
+	} else if (g_str_equal(str, "umtslte")) {
+		*mode = OFONO_RADIO_ACCESS_MODE_UMTS_LTE;
 		return TRUE;
 	}
 
