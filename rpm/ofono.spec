@@ -26,6 +26,7 @@ BuildRequires:  pkgconfig(libglibutil) >= 1.0.6
 BuildRequires:  libtool
 BuildRequires:  automake
 BuildRequires:  autoconf
+Vendor: meego
 
 %description
 Telephony stack
@@ -59,6 +60,15 @@ Provides:   ofono-configs
 %description configs-mer
 This package provides default configs for ofono
 
+%package -n sailfishos-more-network-modes
+BuildArch:  noarch
+Summary:    More network modes patch
+Group:      Qt/Qt
+Requires:   patchmanager
+
+%description -n sailfishos-more-network-modes
+Add more network modes to settings: ANY, LTE, 3G+LTE, 3G only, 3G+2G, 2G only
+
 %prep
 %setup -q -n %{name}-%{version}/%{name}
 
@@ -87,6 +97,8 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}/%{_sysconfdir}/ofono/push_forwarder.d
 mkdir -p %{buildroot}/%{_lib}/systemd/system/network.target.wants
 ln -s ../ofono.service %{buildroot}/%{_lib}/systemd/system/network.target.wants/ofono.service
+mkdir -p %{buildroot}/usr/share/patchmanager/patches/sailfishos-more-network-modes
+cp -r ../patch/* %{buildroot}/usr/share/patchmanager/patches/sailfishos-more-network-modes
 
 %preun
 if [ "$1" -eq 0 ]; then
@@ -129,3 +141,17 @@ systemctl daemon-reload ||:
 %files configs-mer
 %defattr(-,root,root,-)
 %config /etc/ofono/ril_subscription.conf
+
+%pre -n sailfishos-more-network-modes
+if [ -d /var/lib/patchmanager/ausmt/patches/sailfishos-more-network-modes ]; then
+/usr/sbin/patchmanager -u sailfishos-more-network-modes ||:
+fi
+
+%preun -n sailfishos-more-network-modes
+if [ -d /var/lib/patchmanager/ausmt/patches/sailfishos-more-network-modes ]; then
+/usr/sbin/patchmanager -u sailfishos-more-network-modes ||:
+fi
+
+%files -n sailfishos-more-network-modes
+%defattr(-,root,root,-)
+%{_datadir}/patchmanager/patches/sailfishos-more-network-modes
