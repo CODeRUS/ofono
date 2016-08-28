@@ -397,20 +397,21 @@ static void ril_network_poll_state(struct ril_network *self)
 static enum ofono_radio_access_mode ril_network_rat_to_mode(int rat)
 {
 	switch (rat) {
-	case PREF_NET_TYPE_LTE_CDMA_EVDO:
-	case PREF_NET_TYPE_LTE_GSM_WCDMA:
-	case PREF_NET_TYPE_LTE_CMDA_EVDO_GSM_WCDMA:
-	case PREF_NET_TYPE_LTE_ONLY:
-	case PREF_NET_TYPE_LTE_WCDMA:
-		return OFONO_RADIO_ACCESS_MODE_LTE;
-	case PREF_NET_TYPE_GSM_WCDMA_AUTO:
-	case PREF_NET_TYPE_WCDMA:
-	case PREF_NET_TYPE_GSM_WCDMA:
-		return OFONO_RADIO_ACCESS_MODE_UMTS;
-	default:
-		DBG("unexpected rat mode %d", rat);
 	case PREF_NET_TYPE_GSM_ONLY:
 		return OFONO_RADIO_ACCESS_MODE_GSM;
+	case PREF_NET_TYPE_GSM_WCDMA:
+	case PREF_NET_TYPE_GSM_WCDMA_AUTO:
+		return OFONO_RADIO_ACCESS_MODE_GSM_UMTS;
+	case PREF_NET_TYPE_WCDMA:
+		return OFONO_RADIO_ACCESS_MODE_UMTS;
+	case PREF_NET_TYPE_LTE_WCDMA:
+		return OFONO_RADIO_ACCESS_MODE_UMTS_LTE;
+	case PREF_NET_TYPE_LTE_ONLY:
+		return OFONO_RADIO_ACCESS_MODE_LTE;
+	default:
+		DBG("unexpected rat mode %d", rat);
+	case PREF_NET_TYPE_LTE_GSM_WCDMA:
+		return OFONO_RADIO_ACCESS_MODE_ANY;
 	}
 }
 
@@ -418,17 +419,31 @@ static int ril_network_mode_to_rat(struct ril_network *self,
 					enum ofono_radio_access_mode mode)
 {
 	switch (mode) {
-	case OFONO_RADIO_ACCESS_MODE_ANY:
-	case OFONO_RADIO_ACCESS_MODE_LTE:
-		if (self->settings->enable_4g) {
-			return PREF_NET_TYPE_LTE_GSM_WCDMA;
-		}
-		/* no break */
-	default:
-	case OFONO_RADIO_ACCESS_MODE_UMTS:
-		return PREF_NET_TYPE_GSM_WCDMA_AUTO;
 	case OFONO_RADIO_ACCESS_MODE_GSM:
 		return PREF_NET_TYPE_GSM_ONLY;
+	case OFONO_RADIO_ACCESS_MODE_GSM_UMTS:
+		return PREF_NET_TYPE_GSM_WCDMA_AUTO;
+	case OFONO_RADIO_ACCESS_MODE_UMTS:
+		return PREF_NET_TYPE_WCDMA;
+	case OFONO_RADIO_ACCESS_MODE_UMTS_LTE:
+		if (self->settings->enable_4g) {
+			return PREF_NET_TYPE_LTE_WCDMA;
+		} else {
+			return PREF_NET_TYPE_WCDMA;
+		}
+	case OFONO_RADIO_ACCESS_MODE_LTE:
+		if (self->settings->enable_4g) {
+			return PREF_NET_TYPE_LTE_ONLY;
+		} else {
+			return PREF_NET_TYPE_GSM_WCDMA_AUTO;
+		}
+	case OFONO_RADIO_ACCESS_MODE_ANY:
+	default:
+		if (self->settings->enable_4g) {
+			return PREF_NET_TYPE_LTE_GSM_WCDMA;
+		} else {
+			return PREF_NET_TYPE_GSM_WCDMA_AUTO;
+		}
 	}
 }
 
