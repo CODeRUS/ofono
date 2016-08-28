@@ -1,0 +1,45 @@
+diff --git a/SimMobileNetworkSettings.qml b/SimMobileNetworkSettings.qml
+index a6a6fa8..5532c77 100644
+--- a/usr/share/jolla-settings/pages/mobilenetworking/SimMobileNetworkSettings.qml
++++ b/usr/share/jolla-settings/pages/mobilenetworking/SimMobileNetworkSettings.qml
+@@ -226,25 +226,28 @@ Column {
+         menu: ContextMenu {
+             id: networkModeMenu
+             MenuItem {
++                readonly property string tech: "any"
++                text: "Any"
++            }
++            MenuItem {
+                 readonly property string tech: "lte"
+-                //: Network mode settings ComboBox item for preferring 4G/LTE
+-                //% "Prefer 4G"
+-                text: qsTrId("settings_network-me-network_mode_prefer_4G")
+-                visible: radioSettings.availableTechnologies.indexOf(tech) >= 0
++                text: "4G"
++            }
++            MenuItem {
++                readonly property string tech: "umtslte"
++                text: "4G+3G"
+             }
+             MenuItem {
+                 readonly property string tech: "umts"
+-                //: Network mode settings ComboBox item for prefering 3G/umts
+-                //% "Prefer 3G"
+-                text: qsTrId("settings_network-me-network_mode_prefer_3G")
+-                visible: radioSettings.availableTechnologies.indexOf(tech) >= 0
++                text: "3G"
++            }
++            MenuItem {
++                readonly property string tech: "gsmumts"
++                text: "3G+2G"
+             }
+             MenuItem {
+                 readonly property string tech: "gsm"
+-                //: Network mode settings ComboBox item for 2G/gsm only
+-                //% "2G only"
+-                text: qsTrId("settings_network-me-network_mode_2G_only")
+-                visible: radioSettings.availableTechnologies.indexOf(tech) >= 0
++                text: "2G"
+             }
+         }
+     }
